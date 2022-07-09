@@ -5,6 +5,7 @@ import {
   View,
   Dimensions,
   TouchableOpacity,
+  FlatList,
 } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import SearchBar from "react-native-dynamic-search-bar";
@@ -12,6 +13,20 @@ import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import * as Location from "expo-location";
 
+const DATA = [
+  {
+    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
+    title: "First Item",
+  },
+  {
+    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
+    title: "Second Item",
+  },
+  {
+    id: "58694a0f-3da1-471f-bd96-145571e29d72",
+    title: "Third Item",
+  },
+];
 export default class Map extends Component {
   state = {
     mapStyle: [
@@ -181,6 +196,7 @@ export default class Map extends Component {
     error: null,
     isListingSelected: false,
     mapRef: {},
+    search: "",
   };
 
   componentDidUpdate = async () => {
@@ -229,7 +245,24 @@ export default class Map extends Component {
       });
     }
   };
+  Item = ({ title }) => (
+    <View
+      style={{
+        backgroundColor: this.props.theme ? "#444444" : "white",
+        padding: 20,
+        width: "100%",
+      }}
+    >
+      <Text
+        style={{ color: this.props.theme ? "white" : "black", fontSize: 26 }}
+      >
+        {title}
+      </Text>
+    </View>
+  );
   render() {
+    const renderItem = ({ item }) => <this.Item title={item.title} />;
+
     return (
       <View style={styles.container}>
         <MapView
@@ -270,10 +303,27 @@ export default class Map extends Component {
         <SearchBar
           style={{ position: "absolute", top: "10%" }}
           placeholder="Search here"
-          onPress={() => alert("onPress")}
-          onChangeText={text => console.log(text)}
+          onPress={() => this.setState({ search: "" })}
+          onChangeText={text => this.setState({ search: text })}
           darkMode={this.props.theme}
         />
+        {this.state.search.length !== 0 ? (
+          <FlatList
+            data={DATA}
+            renderItem={renderItem}
+            style={{
+              position: "absolute",
+              top: "16%",
+              borderRadius: 10,
+              width: "90%",
+              zIndex: 1,
+            }}
+            keyExtractor={item => item.id}
+          />
+        ) : (
+          <Text></Text>
+        )}
+
         <TouchableOpacity
           style={{
             position: "absolute",

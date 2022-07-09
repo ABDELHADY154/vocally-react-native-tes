@@ -14,12 +14,15 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "config": {
         "googleMapsApiKey": "AIzaSyCFYkJYu8Rc1rNgXf2ogCuXHaPb4qyiWvo"
-      }
+      },
+      "bundleIdentifier": "com.abdelhady154.test"
     },
     "android": {
       "adaptiveIcon": {
